@@ -1,16 +1,23 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import { RootStackParamList } from "../navigation/StackNavigator";
+import CustomButton from "../components/CustomButton";
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+export default function HomeScreen({navigation, route}: any) {
+const [ items, setItems] = useState<string[]> ([]);
 
-export default function HomeScreen({route}: Props) {
-    const { email } = route.params;
+const routeItem = route.params?.newItem;
 
+useEffect(()=>{
+    console.log('item por parametros: ' + routeItem);
+}, [])
+
+const handleRegisterService = () =>{
+navigation.navigate('ServiceRegistry');
+}
     return(
         <View>
-            <Text>Bienvenido</Text>
-            <Text>Correo: {email}</Text>
+            <CustomButton title="Agrega un Servicio"
+                onPress={handleRegisterService}/>
         </View>
     )
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { View, Text,StyleSheet } from "react-native";
+import { View, Text,StyleSheet, Alert } from "react-native";
+
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/Customlnput";
 
@@ -8,7 +9,7 @@ export default function LoginScreen({navigation} : any) {
 
   const handleLogin = () => {
     try {
-        navigation.navigate('Home', {email});
+        navigation.navigate('Tabs');
     } catch (error) {
         console.log(error);
     }
@@ -34,10 +35,11 @@ export default function LoginScreen({navigation} : any) {
 
             
         </CustomButton>
-        <CustomButton title={'Registrarme'} variant='secondary' onPress={function (): void {
-          throw new Error('Function not implemented.');
-        }}>
-        </CustomButton>
+        <CustomButton
+          title="Registrarme"
+          variant="secondary"
+          onPress={() => navigation.navigate("Register")}
+        />
       </View>
     </View>
   );
