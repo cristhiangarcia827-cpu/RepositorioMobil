@@ -23,7 +23,7 @@ export default function RegisterScreen({ navigation }: any) {
       return;
     }
 
-    navigation.navigate("Tabs"); 
+    navigation.navigate("Tabs");
   };
 
   return (

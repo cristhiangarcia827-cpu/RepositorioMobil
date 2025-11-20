@@ -1,23 +1,34 @@
 import { useState } from "react";
-import { View, Text,StyleSheet, Alert } from "react-native";
-
+import { View, Text, StyleSheet } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/Customlnput";
+import { useAuth } from "../contexts/AuthContext";
+import { i18n } from "../contexts/LanguageContext";
 
-export default function LoginScreen({navigation} : any) {
+export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
+
+  const {login, isAllowed}= useAuth();
+  
 
   const handleLogin = () => {
     try {
-        navigation.navigate('Tabs');
+      const allowed = login(email);
+      if(allowed){
+        console.log(isAllowed);
+        console.log("allowed en login if:" + allowed)
+        navigation.navigate('Tabs');  
+      }
+      console.log("allowed en login:" + allowed)
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.title}> Sign In</Text>
+        <Text style={styles.title}>{i18n.t('signIn')}</Text>
         <CustomInput
           value={email}
           type='email'
@@ -28,15 +39,15 @@ export default function LoginScreen({navigation} : any) {
           value={'123456'}
           type='password'
           placeholder={'Correo'}
-          onChange={()=>{}}
+          onChange={() => { }}
         />
-        <CustomButton title={'Iniciar Sesion'} 
-        onPress={handleLogin}>
+        <CustomButton title={i18n.t('signIn')}
+          onPress={handleLogin}>
 
-            
+
         </CustomButton>
         <CustomButton
-          title="Registrarme"
+          title={i18n.t('signUp')}
           variant="secondary"
           onPress={() => navigation.navigate("Register")}
         />
@@ -56,7 +67,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   card: {
-   backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFFFF',
     borderRadius: 15,
     padding: 30,
     width: '85%',
