@@ -1,37 +1,72 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+// src/components/CustomButton.tsx
+import React from "react";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { useTheme } from "../contexts/ThemeContext";
+import { getThemeColors } from "../utils/theme";
 
-type Props = {
-    title: string;
-    onPress: () => void;
-    variant?: "primary" | "secondary" | "tertiary";
-};
-export default function CustomButton({title, onPress, variant = "primary"}: Props){
-    const styles = getStyles(variant);
+type Variant = "primary" | "secondary";
 
-    return(
-            <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Text style={styles.buttonTitle}> {title} </Text>
-            </TouchableOpacity>
-    );
-} 
+interface CustomButtonProps {
+  title: string;
+  onPress: () => void;
+  variant?: Variant;
+}
 
-const getStyles = (variant: 'primary' | 'secondary' | 'tertiary') => 
-    StyleSheet.create(
-        {
-            button:{
-                borderColor: "#000",
-                borderRadius: 6,
-                padding: 12, 
-                marginBottom: 10,
-                backgroundColor: variant === "primary" ? '#2d0f2fff' : 
-                                    variant === "secondary" ? '#E3DBDB' :
-                                        "#fff"
-            }, 
-            buttonTitle:{
-                color: variant === 'primary'?'#ccc' : 
-                        variant === 'secondary'? '#000' :
-                        '#656c78',
-                fontWeight: 'bold'
-            }
-        }
-    )
+export default function CustomButton({
+  title,
+  onPress,
+  variant = "primary",
+}: CustomButtonProps) {
+  const { theme } = useTheme();
+  const colors = getThemeColors(theme);
+  const isPrimary = variant === "primary";
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85}
+      style={[
+        styles.base,
+        isPrimary
+          ? { backgroundColor: colors.primary,
+           }
+          : {
+              backgroundColor: colors.backgroundAlt,
+              borderColor: colors.border,
+              borderWidth: 1,
+            },
+      ]}
+      onPress={onPress}
+    >
+      <Text
+        style={[
+          styles.text,
+          { color: colors.text },
+        ]}
+      >
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+}
+
+const styles = StyleSheet.create({
+  base: {
+    width: "100%",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+    marginVertical: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#F9FAFB",
+  },
+});
