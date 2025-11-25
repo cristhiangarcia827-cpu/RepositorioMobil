@@ -30,8 +30,8 @@ const HomeScreen = () => {
 
       {/* Card principal */}
       <View style={[styles.card, { backgroundColor: colors.card }]}>
-        <Text style={[styles.cardTitle, { color: colors.text }]}>
-          Gestiona tus citas de belleza
+        <Text>
+        {client.name ? 'Cliente actual:' + client.name: "No hay perfil de cliente cargado"}
         </Text>
         <Text style={[styles.cardText, { color: colors.textSecondary }]}>
           Desde aquí podrá consultar la información del cliente, actualizar

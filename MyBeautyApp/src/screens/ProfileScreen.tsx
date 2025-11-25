@@ -12,15 +12,21 @@ import { useTheme } from "../contexts/ThemeContext";
 import { getThemeColors } from "../utils/theme";
 import CustomButton from "../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setClientProfile } from "../store/clientSlice";
 
 const ProfileScreen = () => {
-  const [clientName, setClientName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [favoriteService, setFavoriteService] = useState("");
-  const [notes, setNotes] = useState("");
+  const dispatch = useAppDispatch();
+  const savedProfile = useAppSelector((state) => state.client);
+
   const { theme } = useTheme();
   const colors = getThemeColors(theme);
   const navigation = useNavigation<any>();
+
+  const [clientName, setClientName] = useState(savedProfile.name);
+  const [phone, setPhone] = useState(savedProfile.phone);
+  const [favoriteService, setFavoriteService] = useState(savedProfile.favoriteService);
+  const [notes, setNotes] = useState(savedProfile.notes);
 
   const handleSave = () => {
     if (!clientName || !phone || !favoriteService) {
@@ -30,6 +36,15 @@ const ProfileScreen = () => {
       );
       return;
     }
+
+    dispatch(
+      setClientProfile({
+        name: clientName,
+        phone,
+        favoriteService,
+        notes
+      })
+    )
 
     Alert.alert(
       "Perfil guardado",
